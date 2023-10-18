@@ -24,11 +24,22 @@ function App() {
       reminder: false,
     }
   ])
+
+  // delete text
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id))
+  }
+
+  // toggle reminder - double clicking will change it to the opposite for reminder
+  const toggleReminder = (id) => {
+    setTasks(tasks.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task))
+  }
+ 
   return (
     // JXS can only have one parent element
     <div className="container">
       <Header />
-      <Tasks tasks={tasks}/>
+      {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No Tasks To Show'} 
     </div>
   );
 }
