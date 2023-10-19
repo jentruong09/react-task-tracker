@@ -4,6 +4,8 @@ import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 
 function App() {
+  const [showAddTask, setShowAddTask] = useState(false)
+
   // top level to be able to use in other components
   const [tasks, setTasks] = useState([
     {
@@ -28,7 +30,12 @@ function App() {
 
   // add task
   const addTask = (task) => {
-    console.log(task)
+    // random number for id
+    const id = Math.floor(Math.random() * 10000) + 1
+
+    const newTask = { id, ...task }
+
+    setTasks([...tasks, newTask])
   }
 
   // delete text
@@ -43,9 +50,10 @@ function App() {
  
   return (
     // JXS can only have one parent element
+    // && shorter way to do a ternary operator without the else 
     <div className="container">
-      <Header />
-      <AddTask onAdd={addTask} />
+      <Header onAdd={() => setShowAddTask(!showAddTask)} showAdd={showAddTask} />
+      {showAddTask && <AddTask onAdd={addTask} />}
       {tasks.length > 0 ? <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} /> : 'No Tasks To Show'} 
     </div>
   );
